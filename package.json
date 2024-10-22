@@ -10,6 +10,24 @@
     "type": "git",
     "url": "https://github.com/invertase/react-native-apple-authentication"
   },
+   "scripts": {
+    "tsc:compile": "tsc --noEmit",
+    "build": "genversion --semi lib/version.js",
+    "build:all": "yarn build:clean && yarn build && yarn example:build:android && yarn example:build:ios",
+    "build:clean": "rimraf ios/build android/build example/android/app/build example/ios/build example/macos/build",
+    "build:docs": "typedoc --excludeExternals --out typedocs --plugin typedoc-plugin-markdown --hideBreadcrumbs --entryPoints lib/index.d.ts",
+    "precommit": "yarn prepare && yarn build:all",
+    "prepare": "yarn build && yarn tsc:compile && yarn example:prepare",
+    "example:prepare": "cd example && yarn",
+    "example:build:android": "cd example/android && ./gradlew assembleDebug",
+    "example:build:ios": "cd example && (xcodebuild -workspace ios/RNAppleAuthExample.xcworkspace -scheme RNAppleAuthExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -UseModernBuildSystem=YES | xcbeautify || true)",
+    "example:build:macos": "cd example && (xcodebuild -workspace macos/RNAppleAuthExample.xcworkspace -scheme RNAppleAuthExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -UseModernBuildSystem=YES | xcbeautify || true)",
+    "example:start": "cd example && yarn start",
+    "example:ios": "cd example && yarn ios",
+    "example:macos": "cd example && yarn macos",
+    "example:android": "cd example && yarn android",
+    "shipit": "echo no luck running it like this, try ./node_modules/.bin/np"
+  },
   "license": "Apache-2.0",
   "keywords": [
     "react",
